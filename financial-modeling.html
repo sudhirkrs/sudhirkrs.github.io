@@ -49,6 +49,35 @@ summary{cursor:pointer;font-weight:600}
 .ok{color:var(--accent2)}.bad{color:var(--warn)}
 .heat td{font-variant-numeric:tabular-nums}
 .base{outline:2px solid var(--accent);outline-offset:-2px}
+
+.study{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.player{display:grid;grid-template-columns:230px 1fr;gap:14px}
+@media(max-width:700px){.player{grid-template-columns:1fr}}
+.playlist{max-height:380px;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.playlist button{text-align:left;background:var(--code);color:var(--ink);border:1px solid transparent;font-size:14px}
+.playlist button.on{border-color:var(--accent);color:var(--accent)}
+.playlist small{display:block;color:var(--mute)}
+.stage{background:var(--code);border-radius:12px;padding:22px;min-height:300px;display:flex;flex-direction:column}
+.stage h3{margin:0 0 4px;font-size:22px}
+.stage .kick{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.stage ul{list-style:none;padding:0;margin:14px 0;flex:1}
+.stage li{padding:6px 10px;border-radius:8px;opacity:.35;transition:all .3s;font-size:17px}
+.stage li.on{opacity:1;background:var(--card);border-left:3px solid var(--accent2)}
+.stage li.done{opacity:.8}
+.viz{height:90px;display:flex;align-items:flex-end;gap:8px;margin-bottom:8px}
+.viz i{flex:1;background:var(--accent);border-radius:4px 4px 0 0;display:block;position:relative;transition:height .6s}
+.viz i b{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:11px;font-style:normal;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin:8px 0}
+.bar div{height:100%;width:0;background:var(--accent2);transition:width .3s}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl select{padding:6px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;max-width:180px}
+.cap{font-size:14px;color:var(--mute);font-style:italic;min-height:44px}
+.fc{perspective:900px;margin:10px 0}
+.fcard{min-height:150px;background:var(--code);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:19px;cursor:pointer;user-select:none}
+.fcard.back{background:var(--card);border-color:var(--accent2);font-size:17px}
+.tabs{display:flex;gap:8px;margin:10px 0}
+.tabs button{background:var(--code);color:var(--ink)}
+.tabs button.on{background:var(--accent);color:#fff}
 @media print{nav,button{display:none}body{background:#fff;color:#000}}
 </style>
 </head>
@@ -62,8 +91,42 @@ summary{cursor:pointer;font-weight:600}
 </header>
 
 <nav>
-  <a href="#overview">Overview</a><a href="#m1">1 Principles</a><a href="#m2">2 Three statements</a><a href="#m3">3 Forecasting</a><a href="#m4">4 DCF</a><a href="#lab">Live model</a><a href="#m5">5 Scenarios</a><a href="#m6">6 Comps</a><a href="#m7">7 Auditing</a><a href="#ex">Exercises</a><a href="#quiz">Quiz</a><a href="#cheat">Cheat sheet</a>
+  <a href="#study">Study set</a><a href="#overview">Overview</a><a href="#m1">1 Principles</a><a href="#m2">2 Three statements</a><a href="#m3">3 Forecasting</a><a href="#m4">4 DCF</a><a href="#lab">Live model</a><a href="#m5">5 Scenarios</a><a href="#m6">6 Comps</a><a href="#m7">7 Auditing</a><a href="#ex">Exercises</a><a href="#quiz">Quiz</a><a href="#cheat">Cheat sheet</a>
 </nav>
+
+
+<section id="study">
+  <h2>Study set</h2>
+  <p class="sub">Press a lesson to start the narrated slides, with audio. Then drill with flashcards and the quiz. No downloads, works offline once loaded.</p>
+  <div class="tabs"><button id="tabL" class="on">▶ Audio lessons</button><button id="tabF">🗂 Flashcards</button></div>
+
+  <div class="study" id="paneL">
+    <div class="player">
+      <div class="playlist" id="playlist"></div>
+      <div>
+        <div class="stage" id="stage"></div>
+        <div class="bar"><div id="prog"></div></div>
+        <div class="cap" id="cap">Pick a lesson on the left to start. Audio uses your browser's built-in voice.</div>
+        <div class="ctrl">
+          <button id="bPrev" class="ghost">⏮</button>
+          <button id="bPlay">▶ Play</button>
+          <button id="bNext" class="ghost">⏭</button>
+          <button id="bAll" class="ghost">Play all</button>
+          <label style="display:inline">Speed <select id="rate"><option value="0.85">0.85×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.3×</option></select></label>
+          <select id="voice" title="Voice"></select>
+          <label style="display:inline"><input type="checkbox" id="mute"> captions only</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="study" id="paneF" hidden>
+    <div class="ctrl"><span id="fcount"></span><button class="ghost" id="fshuf">Shuffle</button><button class="ghost" id="fhard">Review only missed</button><button class="ghost" id="freset">Reset</button></div>
+    <div class="fc"><div class="fcard" id="fcard"></div></div>
+    <div class="ctrl"><button class="ghost" id="fprev">←</button><button id="fflip">Flip</button><button class="ghost" id="fnext">→</button><button id="fmiss" style="background:var(--warn)">✗ Missed</button><button id="fgot" style="background:var(--accent2)">✓ Got it</button><button class="ghost" id="fspeak">🔊 Read</button></div>
+    <p class="sub">Tip: click the card to flip. Progress is saved in this browser.</p>
+  </div>
+</section>
 
 <section id="overview">
   <h2>Session overview</h2>
@@ -451,6 +514,152 @@ summary{cursor:pointer;font-weight:600}
     });
     document.getElementById("score").textContent="Score: "+sc+" / "+Q.length;
   });
+
+  /* ===== Study set: narrated lessons + flashcards ===== */
+  var L=[
+   {t:"Welcome and the big picture",d:"2 min",s:[
+    {h:"What is a financial model?",b:["A model turns assumptions into forecast financials","It answers: what is the business worth, and what could change it?","Good models are simple, flexible, transparent and checked"],n:["A financial model turns a set of assumptions into forecast financial statements.","Its job is to answer what a business is worth, and what could change that answer.","A good model is simple enough to audit, flexible, transparent, and has built in checks."]}]},
+   {t:"1. Principles and layout",d:"3 min",s:[
+    {h:"Structure",b:["Inputs, then calculations, then outputs","One formula per row, copied across","Time runs left to right"],n:["Separate your inputs, your calculations and your outputs.","Use one consistent formula per row, copied across every period.","Time always runs left to right, with the same columns on every sheet."]},
+    {h:"Colors and rules",b:["Blue for inputs, black for formulas","Green for links, red for checks","Never hardcode inside a formula"],n:["Blue is for hardcoded inputs, and black is for formulas.","Green marks links to other sheets, and red marks checks and errors.","The golden rule: never bury a hardcoded number inside a formula."]}]},
+   {t:"2. The three statements",d:"4 min",s:[
+    {h:"How they link",b:["Net income flows to cash flow and retained earnings","D&A is added back, and reduces PP&E","Capex raises PP&E, working capital changes use cash"],n:["Net income starts the cash flow statement, and also feeds retained earnings.","Depreciation and amortization is non-cash, so it is added back, and it reduces fixed assets.","Capex increases fixed assets, and any rise in working capital consumes cash."]},
+    {h:"The balance check",b:["Assets equal liabilities plus equity","Check row must be zero every period","Interest creates circularity, so use opening balances"],n:["Assets must always equal liabilities plus equity.","Build a check row that must equal zero in every period.","Interest can create circularity, so prefer opening balances or add a circuit breaker."]}]},
+   {t:"3. Forecasting drivers",d:"3 min",s:[
+    {h:"Forecast drivers, not totals",b:["Revenue: volume times price, or segments","Working capital via receivable, inventory and payable days","Fade growth and margins to sustainable levels"],n:["Forecast drivers rather than totals. Revenue is best built from volume times price, or by segment.","Working capital comes from receivable days, inventory days and payable days.","Over the forecast, fade growth and margins toward sustainable levels, and compare with peers."]}]},
+   {t:"4. Free cash flow and WACC",d:"4 min",s:[
+    {h:"Unlevered free cash flow",viz:"fcf",b:["EBIT times one minus tax","Plus D&A, minus capex, minus change in working capital","Tax the EBIT, not the profit before tax"],n:["Unlevered free cash flow is EBIT times one minus the tax rate.","Then add back depreciation, subtract capex, and subtract the increase in working capital.","Tax is applied to EBIT, because interest tax shields are captured in the discount rate."]},
+    {h:"Cost of capital",b:["Cost of equity: risk-free plus beta times equity risk premium","WACC weights equity and after-tax debt","Use target capital structure at market values"],n:["Cost of equity from CAPM is the risk-free rate plus beta times the equity risk premium.","WACC weights the cost of equity and the after-tax cost of debt by their capital shares.","Use a target capital structure, measured at market values."]}]},
+   {t:"4b. Terminal value and DCF",d:"4 min",s:[
+    {h:"Terminal value",b:["Gordon growth: FCF times one plus g, over WACC minus g","WACC must exceed g","Terminal value is often 60 to 75 percent of value"],n:["Gordon growth terminal value is the final year cash flow, grown once, divided by WACC minus g.","WACC must always exceed g, otherwise the formula breaks.","Terminal value is often sixty to seventy five percent of enterprise value, so treat it as a key judgment."]},
+    {h:"From EV to price",b:["Enterprise value is the sum of discounted cash flows","Subtract net debt for equity value","Divide by diluted shares"],n:["Enterprise value is the present value of the forecast cash flows plus the present value of terminal value.","Subtract net debt and other claims to get equity value.","Divide by diluted shares to get value per share. In our live model that is about twenty six rupees."]}]},
+   {t:"5. Sensitivity and scenarios",d:"2 min",s:[
+    {h:"Stress test the answer",b:["Data table: WACC versus terminal growth","Scenario switch: base, upside, downside","Reverse DCF: what does the price imply?"],n:["Flex WACC and terminal growth in a data table to see which input matters most.","Drive base, upside and downside cases from one scenario switch.","A reverse DCF asks what growth and margin the current price already assumes. Always report a range, not a point."]}]},
+   {t:"6. Multiples cross-check",d:"2 min",s:[
+    {h:"Triangulate",b:["EV to EBITDA for most sectors","Use five to eight true peers and the median","Subtract net debt to reach equity"],n:["Cross check the DCF with trading multiples. EV to EBITDA works for most sectors.","Pick five to eight genuinely comparable peers, and use the median.","Multiply, then subtract net debt to reach equity value. Large gaps to the DCF are a prompt to question your assumptions."]}]},
+   {t:"7. Auditing and common errors",d:"3 min",s:[
+    {h:"Audit checklist",b:["Balance sheet check is zero","No hardcodes or plugs, consistent formulas","Signs, units, dates, diluted shares"],n:["Make sure the balance sheet check is zero and cash ties across statements.","Look for hardcodes, plugs, and formulas that change across a row.","Verify signs, units, valuation dates, and use diluted shares. Remember, WACC greater than g, always."]}]}
+  ];
+  var flat=[],start={};
+  L.forEach(function(l,i){start[i]=flat.length;l.s.forEach(function(sl,j){flat.push({li:i,si:j,sl:sl})})});
+
+  var syn=window.speechSynthesis,voices=[],cur=0,bi=0,playing=false,playAll=false,token=0,timer=null;
+  var $=function(id){return document.getElementById(id)};
+
+  function loadVoices(){
+    if(!syn)return;voices=syn.getVoices().filter(function(v){return /^en/i.test(v.lang)});
+    var sel=$("voice"),pick=0;
+    sel.innerHTML=voices.map(function(v,i){if(/en-IN/i.test(v.lang)&&!pick)pick=i;return '<option value="'+i+'">'+v.name+' ('+v.lang+')</option>'}).join("");
+    sel.value=pick;
+  }
+  if(syn){loadVoices();syn.onvoiceschanged=loadVoices;}else{$("mute").checked=true;$("mute").disabled=true;}
+
+  function renderList(){
+    $("playlist").innerHTML=L.map(function(l,i){return '<button data-i="'+i+'" class="'+(flat[cur].li===i?"on":"")+'">'+l.t+'<small>'+l.d+' · '+l.s.length+' slide'+(l.s.length>1?"s":"")+'</small></button>'}).join("");
+    Array.prototype.forEach.call($("playlist").children,function(b){b.addEventListener("click",function(){playAll=false;goto(start[+b.dataset.i],true)})});
+  }
+  function vizFcf(){
+    var r=window.__dcf(S).rows,m=Math.max.apply(null,r.map(function(x){return x.fcf}));
+    return '<div class="viz">'+r.map(function(x,i){return '<i style="height:'+Math.max(6,x.fcf/m*80)+'px"><b>'+Math.round(x.fcf)+'</b></i>'}).join("")+'</div><div class="sub" style="font-size:12px;margin-top:-4px">Kaveri Foods unlevered FCF, Y1 to Y5 (₹ cr), from the live model</div>';
+  }
+  function draw(){
+    var o=flat[cur],l=L[o.li],sl=o.sl;
+    $("stage").innerHTML='<div class="kick">'+l.t+' · slide '+(o.si+1)+'/'+l.s.length+'</div><h3>'+sl.h+'</h3>'+(sl.viz==="fcf"?vizFcf():"")+'<ul>'+sl.b.map(function(x,i){return '<li id="bl'+i+'">'+x+'</li>'}).join("")+'</ul>';
+    $("prog").style.width=((cur)/flat.length*100)+"%";
+    renderList();
+  }
+  function mark(i){
+    flat[cur].sl.b.forEach(function(_,k){var e=$("bl"+k);if(e)e.className=k<i?"done":(k===i?"on":"")});
+    $("cap").textContent=flat[cur].sl.n[i]||"";
+  }
+  function stop(){token++;if(syn)syn.cancel();clearTimeout(timer);playing=false;$("bPlay").textContent="▶ Play"}
+  function goto(i,auto){
+    stop();cur=Math.max(0,Math.min(flat.length-1,i));bi=0;draw();mark(-1);
+    if(auto)play();
+  }
+  function say(){
+    var my=token,n=flat[cur].sl.n,text=n[bi];
+    mark(bi);
+    var next=function(){
+      if(my!==token)return;
+      bi++;
+      if(bi<n.length)say();
+      else{
+        bi=0;
+        if(cur<flat.length-1&&(playAll||flat[cur+1].li===flat[cur].li)){cur++;draw();mark(-1);timer=setTimeout(function(){if(my===token)say()},500);}
+        else if(cur<flat.length-1&&!playAll){playing=false;$("bPlay").textContent="▶ Play";}
+        else{playing=false;$("bPlay").textContent="▶ Replay";cur=0;}
+      }
+    };
+    if(syn&&!$("mute").checked){
+      var u=new SpeechSynthesisUtterance(text);
+      u.rate=parseFloat($("rate").value);
+      var v=voices[+$("voice").value];if(v){u.voice=v;u.lang=v.lang}
+      u.onend=function(){timer=setTimeout(next,250)};
+      u.onerror=function(e){if(e.error!=="canceled"&&e.error!=="interrupted"){$("mute").checked=true;timer=setTimeout(next,2000)}};
+      syn.speak(u);
+    }else{
+      timer=setTimeout(next,Math.max(2200,text.length*55/parseFloat($("rate").value)));
+    }
+  }
+  function play(){
+    if(playing){stop();return;}
+    playing=true;token++;$("bPlay").textContent="⏸ Pause";say();
+  }
+  $("bPlay").addEventListener("click",play);
+  $("bPrev").addEventListener("click",function(){goto(cur-1,playing)});
+  $("bNext").addEventListener("click",function(){goto(cur+1,playing)});
+  $("bAll").addEventListener("click",function(){playAll=true;goto(0,true)});
+  $("rate").addEventListener("change",function(){if(playing){var w=playing;stop();playing=true;token++;$("bPlay").textContent="⏸ Pause";say();}});
+  window.addEventListener("beforeunload",function(){if(syn)syn.cancel()});
+  draw();mark(-1);
+
+  /* Flashcards */
+  var C=[
+   ["What does UFCF stand for and what is the formula?","Unlevered free cash flow = EBIT(1−t) + D&A − Capex − ΔNWC."],
+   ["Why tax EBIT rather than EBT in a DCF?","Unlevered cash flows ignore financing; the interest tax shield is captured in after-tax cost of debt in WACC."],
+   ["CAPM cost of equity?","Ke = Rf + β × ERP."],
+   ["WACC formula?","E/(D+E)·Ke + D/(D+E)·Kd·(1−t), at target market-value weights."],
+   ["Gordon growth terminal value?","TV = UFCFₙ × (1+g) / (WACC − g)."],
+   ["What condition must hold for Gordon growth?","WACC must be greater than g."],
+   ["Typical share of EV from terminal value?","Often 60 to 75%. Always show it."],
+   ["EV to equity value bridge?","Equity = EV − net debt − minorities − pensions + non-operating assets."],
+   ["Value per share?","Equity value ÷ diluted shares outstanding."],
+   ["Does an increase in NWC raise or lower cash flow?","Lowers it; cash is tied up in receivables and inventory."],
+   ["Where does D&A show up across the three statements?","Expense on income statement, add-back in CFO, reduces PP&E on balance sheet."],
+   ["Balance sheet identity?","Assets = Liabilities + Equity; keep a check row at zero."],
+   ["Model color code?","Blue inputs, black formulas, green links, red checks."],
+   ["Receivable days formula?","Receivables = Revenue × days / 365."],
+   ["Inventory and payable days are based on…?","COGS, not revenue (by convention)."],
+   ["Why avoid circular interest?","Interest depends on average debt, which depends on cash flow; use opening balances or a circuit breaker."],
+   ["When is EV/EBITDA better than P/E?","When comparing firms with different leverage or tax; it is capital-structure neutral."],
+   ["Why use the median in comps?","It reduces outlier influence."],
+   ["What is a reverse DCF?","Solve for the growth/margin implied by the current market price."],
+   ["Name three audit checks.","Balance check = 0; consistent formulas across rows; no hardcodes/plugs (also signs, units, diluted shares)."]
+  ];
+  var F={order:C.map(function(_,i){return i}),i:0,back:false,missed:{}};
+  try{F.missed=JSON.parse(localStorage.getItem("fm_missed")||"{}")}catch(e){}
+  function save(){try{localStorage.setItem("fm_missed",JSON.stringify(F.missed))}catch(e){}}
+  function fshow(){
+    var c=C[F.order[F.i]],el=$("fcard");
+    el.textContent=F.back?c[1]:c[0];el.className="fcard"+(F.back?" back":"");
+    $("fcount").textContent="Card "+(F.i+1)+" / "+F.order.length+" · missed: "+Object.keys(F.missed).length;
+  }
+  function fgo(d){F.i=(F.i+d+F.order.length)%F.order.length;F.back=false;fshow()}
+  $("fcard").addEventListener("click",function(){F.back=!F.back;fshow()});
+  $("fflip").addEventListener("click",function(){F.back=!F.back;fshow()});
+  $("fnext").addEventListener("click",function(){fgo(1)});
+  $("fprev").addEventListener("click",function(){fgo(-1)});
+  $("fgot").addEventListener("click",function(){delete F.missed[F.order[F.i]];save();fgo(1)});
+  $("fmiss").addEventListener("click",function(){F.missed[F.order[F.i]]=1;save();fgo(1)});
+  $("fshuf").addEventListener("click",function(){F.order=C.map(function(_,i){return i}).sort(function(){return Math.random()-.5});F.i=0;F.back=false;fshow()});
+  $("fhard").addEventListener("click",function(){var m=Object.keys(F.missed).map(Number);if(!m.length){alert("No missed cards yet.");return}F.order=m;F.i=0;F.back=false;fshow()});
+  $("freset").addEventListener("click",function(){F.missed={};save();F.order=C.map(function(_,i){return i});F.i=0;F.back=false;fshow()});
+  $("fspeak").addEventListener("click",function(){if(!syn)return;syn.cancel();var u=new SpeechSynthesisUtterance(F.back?C[F.order[F.i]][1]:C[F.order[F.i]][0]);var v=voices[+$("voice").value];if(v)u.voice=v;syn.speak(u)});
+  fshow();
+
+  $("tabL").addEventListener("click",function(){$("paneL").hidden=false;$("paneF").hidden=true;$("tabL").className="on";$("tabF").className=""});
+  $("tabF").addEventListener("click",function(){stop();$("paneL").hidden=true;$("paneF").hidden=false;$("tabF").className="on";$("tabL").className=""});
 })();
 </script>
 </body>
