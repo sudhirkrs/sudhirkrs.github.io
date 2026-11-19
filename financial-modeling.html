@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Financial Modeling Session</title>
+<meta name="description" content="A complete 3.5-hour session on financial modeling: three statements, forecasting, DCF, sensitivities, comps, auditing, with a live model, exercises and quiz.">
+<style>
+:root{--bg:#fafaf7;--card:#fff;--ink:#1c2230;--mute:#5d6678;--line:#e3e5ea;--accent:#1f5fbf;--accent2:#0f8a5f;--warn:#b4531a;--input:#0000ff;--code:#f1f3f7}
+@media (prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1a1f2a;--ink:#e8ebf2;--mute:#9aa3b5;--line:#2c3342;--accent:#6aa3ff;--accent2:#4cd1a0;--warn:#f0985a;--input:#7aa2ff;--code:#222939}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header.hero{padding:48px 0 24px}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 8px}
+h2{font-size:26px;margin:0 0 4px}
+h3{font-size:18px;margin:24px 0 6px}
+.sub{color:var(--mute);margin:0}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5;overflow-x:auto;white-space:nowrap;padding:8px 0}
+nav a{color:var(--mute);text-decoration:none;font-size:14px;margin-right:14px}
+nav a:hover{color:var(--accent)}
+section{padding-top:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+.tag{display:inline-block;font-size:12px;background:var(--code);color:var(--mute);border-radius:99px;padding:2px 10px;margin-right:6px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mute);font-weight:600}
+.scroll{overflow-x:auto}
+code,pre{background:var(--code);border-radius:6px;font:13px ui-monospace,Menlo,monospace}
+code{padding:1px 5px}
+pre{padding:12px;overflow-x:auto}
+.formula{background:var(--code);border-left:3px solid var(--accent);padding:10px 14px;border-radius:6px;margin:10px 0;font:14px ui-monospace,Menlo,monospace;overflow-x:auto}
+.callout{border-left:3px solid var(--warn);background:var(--card);padding:10px 14px;border-radius:6px;margin:12px 0}
+ul,ol{padding-left:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+label{display:block;font-size:13px;color:var(--mute)}
+input[type=number]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--input);font:inherit;font-weight:600}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.kpi{background:var(--code);border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px;color:var(--accent2)}
+.kpi span{font-size:12px;color:var(--mute)}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+.q{margin:16px 0}
+.q label{color:var(--ink);font-size:15px;padding:4px 0;cursor:pointer}
+.ok{color:var(--accent2)}.bad{color:var(--warn)}
+.heat td{font-variant-numeric:tabular-nums}
+.base{outline:2px solid var(--accent);outline-offset:-2px}
+@media print{nav,button{display:none}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="tag">3.5 hours</span><span class="tag">Intermediate</span><span class="tag">Hands-on</span>
+  <h1>Financial Modeling: From Three Statements to Valuation</h1>
+  <p class="sub">A complete facilitator-ready session. Learners build the logic of an integrated model, value a business with a DCF, stress-test it, and cross-check with multiples. All figures are illustrative, not investment advice.</p>
+</header>
+
+<nav>
+  <a href="#overview">Overview</a><a href="#m1">1 Principles</a><a href="#m2">2 Three statements</a><a href="#m3">3 Forecasting</a><a href="#m4">4 DCF</a><a href="#lab">Live model</a><a href="#m5">5 Scenarios</a><a href="#m6">6 Comps</a><a href="#m7">7 Auditing</a><a href="#ex">Exercises</a><a href="#quiz">Quiz</a><a href="#cheat">Cheat sheet</a>
+</nav>
+
+<section id="overview">
+  <h2>Session overview</h2>
+  <div class="card">
+    <h3 style="margin-top:0">Learning objectives</h3>
+    <p>By the end, participants can:</p>
+    <ol>
+      <li>Structure a model with separate inputs, calculations and outputs, using standard formatting conventions.</li>
+      <li>Link the income statement, balance sheet and cash flow statement so the balance sheet balances by construction.</li>
+      <li>Build driver-based forecasts for revenue, margins, working capital and capex.</li>
+      <li>Compute unlevered free cash flow, WACC and terminal value, and arrive at equity value per share.</li>
+      <li>Run sensitivity and scenario analysis and explain which assumptions drive value.</li>
+      <li>Cross-check a DCF with trading multiples and audit a model for common errors.</li>
+    </ol>
+    <h3>Prerequisites and materials</h3>
+    <p>Basic accounting literacy (what the three statements are) and Excel or Google Sheets. Facilitators need a projector, this page, and a blank workbook. Participants need laptops.</p>
+  </div>
+
+  <h3>Agenda</h3>
+  <div class="card scroll">
+  <table>
+    <tr><th>Time</th><th>Block</th><th>Format</th></tr>
+    <tr><td>0:00 to 0:10</td><td>Welcome, objectives, the case company</td><td>Talk</td></tr>
+    <tr><td>0:10 to 0:30</td><td>1. Modeling principles and layout</td><td>Talk + demo</td></tr>
+    <tr><td>0:30 to 1:05</td><td>2. The three statements and how they link</td><td>Talk + build</td></tr>
+    <tr><td>1:05 to 1:30</td><td>3. Driver-based forecasting</td><td>Build</td></tr>
+    <tr><td>1:30 to 1:40</td><td>Break</td><td></td></tr>
+    <tr><td>1:40 to 2:20</td><td>4. Free cash flow, WACC and DCF</td><td>Talk + live model</td></tr>
+    <tr><td>2:20 to 2:40</td><td>5. Sensitivity and scenarios</td><td>Live model</td></tr>
+    <tr><td>2:40 to 2:55</td><td>6. Trading multiples cross-check</td><td>Talk + exercise</td></tr>
+    <tr><td>2:55 to 3:10</td><td>7. Auditing and common errors</td><td>Spot-the-bug</td></tr>
+    <tr><td>3:10 to 3:30</td><td>Capstone, quiz, wrap-up</td><td>Individual</td></tr>
+  </table>
+  </div>
+
+  <h3>The case company</h3>
+  <div class="card">
+    <p><b>Kaveri Foods Ltd</b> (fictional): a packaged-foods maker. Last year's revenue is ₹1,000 crore, EBITDA margin 18%, D&amp;A 4% of revenue, capex 5%, net working capital 12% of revenue, tax 25%, net debt ₹300 crore, 50 crore shares. The same numbers feed the live model in section 4.</p>
+  </div>
+</section>
+
+<section id="m1">
+  <h2>1. Modeling principles</h2><p class="sub">20 min</p>
+  <div class="card">
+    <h3 style="margin-top:0">A good model is…</h3>
+    <ul>
+      <li><b>Simple enough to audit</b>: complexity that nobody can follow is a liability.</li>
+      <li><b>Flexible</b>: change one input and everything flows.</li>
+      <li><b>Transparent</b>: one formula per row, no hidden hardcodes.</li>
+      <li><b>Checked</b>: built-in integrity checks (balance sheet balances, cash ties).</li>
+    </ul>
+    <h3>Layout</h3>
+    <p>Separate tabs (or clearly separated blocks) for <b>Assumptions → Calculations → Outputs</b>. Time runs left to right with consistent columns on every sheet. Units and currency labelled in a header.</p>
+    <h3>Color conventions</h3>
+    <table>
+      <tr><th>Color</th><th>Meaning</th></tr>
+      <tr><td style="color:var(--input);font-weight:700">Blue</td><td>Hardcoded inputs and assumptions</td></tr>
+      <tr><td>Black</td><td>Formulas and calculations</td></tr>
+      <tr><td style="color:var(--accent2);font-weight:700">Green</td><td>Links to other sheets</td></tr>
+      <tr><td style="color:#c00;font-weight:700">Red</td><td>Checks, errors, warnings</td></tr>
+    </table>
+    <div class="callout"><b>Rules to enforce:</b> never hardcode a number inside a formula; never overwrite a formula with a value; never mix units (₹ crore vs ₹ lakh); keep signs consistent (outflows negative).</div>
+    <h3>Useful shortcuts and functions</h3>
+    <p><code>F4</code> anchor refs · <code>Ctrl+[</code> trace precedents · <code>XLOOKUP/INDEX-MATCH</code> · <code>SUMPRODUCT</code> · <code>NPV / XNPV / IRR / XIRR</code> · Data Tables for sensitivities · <code>IFERROR</code> sparingly (it hides bugs).</p>
+  </div>
+</section>
+
+<section id="m2">
+  <h2>2. The three statements and how they link</h2><p class="sub">35 min</p>
+  <div class="card">
+    <p>The model is only credible if the statements are integrated. Walk participants through this chain on the whiteboard:</p>
+    <ol>
+      <li><b>Income statement</b> → Revenue, COGS, opex, EBITDA, D&amp;A, EBIT, interest, tax, <b>net income</b>.</li>
+      <li><b>Cash flow statement</b> starts from net income, adds back D&amp;A (non-cash), subtracts the increase in working capital, then capex (investing) and debt/equity flows (financing) → <b>change in cash</b>.</li>
+      <li><b>Balance sheet</b>: cash = prior cash + change in cash; PP&amp;E = prior + capex − D&amp;A; working capital items from drivers; debt from the debt schedule; retained earnings = prior + net income − dividends.</li>
+    </ol>
+    <div class="formula">Assets = Liabilities + Equity   → check row must equal 0 every period</div>
+    <h3>Linkage map</h3>
+    <div class="scroll"><table>
+      <tr><th>Item</th><th>Flows to</th></tr>
+      <tr><td>Net income</td><td>Cash flow (start), retained earnings</td></tr>
+      <tr><td>D&amp;A</td><td>Add-back in CFO; reduces PP&amp;E</td></tr>
+      <tr><td>Capex</td><td>CFI outflow; increases PP&amp;E</td></tr>
+      <tr><td>Δ Receivables / inventory / payables</td><td>CFO; balance sheet lines</td></tr>
+      <tr><td>Debt repayment / issuance</td><td>CFF; debt balance; interest expense</td></tr>
+      <tr><td>Interest expense</td><td>Income statement (from average or opening debt)</td></tr>
+      <tr><td>Ending cash</td><td>Balance sheet cash; interest income</td></tr>
+    </table></div>
+    <h3>Worked mini-example (one year, ₹ crore)</h3>
+    <div class="scroll"><table>
+      <tr><th>Line</th><th>Value</th></tr>
+      <tr><td>Revenue</td><td>1,100</td></tr>
+      <tr><td>EBITDA (18%)</td><td>198</td></tr>
+      <tr><td>D&amp;A (4%)</td><td>(44)</td></tr>
+      <tr><td>EBIT</td><td>154</td></tr>
+      <tr><td>Interest (8% × 300)</td><td>(24)</td></tr>
+      <tr><td>Pre-tax profit</td><td>130</td></tr>
+      <tr><td>Tax (25%)</td><td>(32.5)</td></tr>
+      <tr><td><b>Net income</b></td><td><b>97.5</b></td></tr>
+      <tr><td>+ D&amp;A</td><td>44</td></tr>
+      <tr><td>− Δ NWC (12% × 100)</td><td>(12)</td></tr>
+      <tr><td>= CFO</td><td>129.5</td></tr>
+      <tr><td>− Capex (5% × 1,100)</td><td>(55)</td></tr>
+      <tr><td><b>Free cash flow to equity (pre-debt flows)</b></td><td><b>74.5</b></td></tr>
+    </table></div>
+    <div class="callout"><b>Circularity:</b> interest depends on average debt/cash, which depends on cash flow, which depends on interest. Prefer opening balances, or enable iterative calc with a circuit-breaker toggle.</div>
+  </div>
+</section>
+
+<section id="m3">
+  <h2>3. Driver-based forecasting</h2><p class="sub">25 min</p>
+  <div class="card">
+    <p>Forecast <i>drivers</i>, not line items. Each driver needs a reason, a source and a range.</p>
+    <div class="scroll"><table>
+      <tr><th>Line</th><th>Driver</th><th>Typical approach</th></tr>
+      <tr><td>Revenue</td><td>Volume × price; or segments; or market share</td><td>Bottom-up beats flat growth %</td></tr>
+      <tr><td>COGS / margins</td><td>% of revenue, with input-cost sensitivity</td><td>Fade to peer margin</td></tr>
+      <tr><td>Opex</td><td>Fixed + variable split</td><td>Operating leverage</td></tr>
+      <tr><td>Working capital</td><td>Receivable, inventory, payable days</td><td><code>Days × Revenue/365</code></td></tr>
+      <tr><td>Capex / D&amp;A</td><td>% of revenue; PP&amp;E roll-forward</td><td>Capex ≥ D&amp;A for a growing firm</td></tr>
+      <tr><td>Debt / interest</td><td>Schedule with repayments</td><td>Rate × opening balance</td></tr>
+    </table></div>
+    <h3>Forecast hygiene</h3>
+    <ul>
+      <li>Forecast 5 to 10 explicit years, then a terminal value; fade growth and margins toward sustainable levels.</li>
+      <li>Check outputs against history: does a 25% margin make sense when the best peer earns 20%?</li>
+      <li>Sanity metrics: ROIC, revenue per employee, capex/D&amp;A, cash conversion.</li>
+      <li>Model three cases (base, upside, downside) from one switch cell.</li>
+    </ul>
+    <h3>Mini-build (10 min)</h3>
+    <p>In a blank sheet, put revenue growth, EBITDA margin, D&amp;A %, capex % and NWC % in blue input cells for 5 years. Compute revenue, EBITDA, EBIT and ΔNWC with one consistent formula copied across. Then compare with the live model below.</p>
+  </div>
+</section>
+
+<section id="m4">
+  <h2>4. Free cash flow, WACC and DCF</h2><p class="sub">40 min</p>
+  <div class="card">
+    <h3 style="margin-top:0">Unlevered free cash flow</h3>
+    <div class="formula">UFCF = EBIT × (1 − t) + D&amp;A − Capex − ΔNWC</div>
+    <h3>Cost of capital</h3>
+    <div class="formula">Cost of equity (CAPM) = Rf + β × ERP<br>WACC = E/(D+E) × Ke + D/(D+E) × Kd × (1 − t)</div>
+    <p>Example: Rf 7%, β 1.0, ERP 6% → Ke 13%. Pre-tax Kd 9%, tax 25% → 6.75% after tax. At 30% debt weight, WACC ≈ 0.7 × 13% + 0.3 × 6.75% ≈ <b>11.1%</b>. Use target (not current) capital structure, market values, and be consistent with the currency of cash flows.</p>
+    <h3>Terminal value</h3>
+    <div class="formula">Gordon growth: TV = UFCF<sub>n</sub> × (1 + g) / (WACC − g)<br>Exit multiple: TV = EBITDA<sub>n</sub> × multiple</div>
+    <p>Keep g at or below long-run nominal GDP growth (India roughly 8 to 10% nominal, mature economies 2 to 3%); in this exercise 4 to 5% is already generous. Cross-check the implied exit multiple from a Gordon TV.</p>
+    <h3>From enterprise value to price</h3>
+    <div class="formula">EV = Σ UFCF<sub>t</sub>/(1+WACC)<sup>t</sup> + TV/(1+WACC)<sup>n</sup><br>Equity value = EV − net debt − minorities − pensions + non-operating assets<br>Value per share = Equity value / diluted shares</div>
+    <div class="callout"><b>Typical pitfall:</b> terminal value often exceeds 60 to 75% of EV. Always report the TV share and treat it as the key judgment, not a plug.</div>
+  </div>
+</section>
+
+<section id="lab">
+  <h2>Live model: Kaveri Foods DCF</h2>
+  <p class="sub">Blue inputs are editable. Everything recalculates instantly. Use it for the demo, the exercises and the sensitivity discussion.</p>
+  <div class="card">
+    <div class="grid" id="inputs"></div>
+    <div style="margin-top:10px"><button class="ghost" id="reset">Reset to base case</button></div>
+    <div class="out" id="kpis"></div>
+    <div class="scroll"><table id="proj"></table></div>
+    <h3>Sensitivity: value per share (₹) vs WACC and terminal growth</h3>
+    <div class="scroll"><table class="heat" id="sens"></table></div>
+    <p class="sub" id="note"></p>
+  </div>
+</section>
+
+<section id="m5">
+  <h2>5. Sensitivity and scenarios</h2><p class="sub">20 min</p>
+  <div class="card">
+    <ul>
+      <li><b>Sensitivity</b>: flex one or two variables (WACC × g; growth × margin) using a data table. Identify which input moves value most.</li>
+      <li><b>Scenarios</b>: a single selector (1 = base, 2 = upside, 3 = downside) driving growth, margin and capex via <code>CHOOSE()</code> or <code>INDEX()</code>.</li>
+      <li><b>Tornado</b>: change each input ±10% and rank the impact on value.</li>
+      <li><b>Break-even</b>: what growth or margin does the current price imply? (reverse DCF)</li>
+    </ul>
+    <h3>Facilitator activity (10 min)</h3>
+    <p>In the live model, ask groups to build the downside case: Y1 growth 6%, Y5 growth 4%, margin 15%. Record the value per share, then the upside (growth 14%/8%, margin 20%). Discuss the range and what would have to be true for each.</p>
+    <p><b>Probability-weighting:</b> 25% downside, 50% base, 25% upside gives an expected value; compare it with the base case alone.</p>
+  </div>
+</section>
+
+<section id="m6">
+  <h2>6. Trading multiples cross-check</h2><p class="sub">15 min</p>
+  <div class="card">
+    <div class="scroll"><table>
+      <tr><th>Multiple</th><th>Best for</th><th>Watch out</th></tr>
+      <tr><td>EV/EBITDA</td><td>Capital-structure neutral, most sectors</td><td>Differing capex intensity</td></tr>
+      <tr><td>P/E</td><td>Mature profitable firms, banks</td><td>Leverage and accounting noise</td></tr>
+      <tr><td>EV/Sales</td><td>Early stage, low margins</td><td>Ignores profitability</td></tr>
+      <tr><td>P/B</td><td>Banks and insurers</td><td>Intangible-heavy firms</td></tr>
+      <tr><td>EV/EBIT, EV/FCF</td><td>Capex-heavy businesses</td><td>Volatile base</td></tr>
+    </table></div>
+    <h3>Process</h3>
+    <ol>
+      <li>Pick 5 to 8 genuinely comparable peers (business mix, growth, margins, geography).</li>
+      <li>Calendarize to the same year-end; use consistent EBITDA definitions.</li>
+      <li>Compute mean, median, quartiles; use the median to reduce outlier impact.</li>
+      <li>Apply to the target's metric; subtract net debt for equity value.</li>
+    </ol>
+    <h3>Exercise</h3>
+    <p>Peers trade at EV/EBITDA of 12.0×, 13.5×, 14.0×, 15.5×, 18.0×. Kaveri's EBITDA is ₹180 crore, net debt ₹300 crore, 50 crore shares. What is the implied price per share at the median? <details><summary>Answer</summary>Median = 14.0×. EV = 14.0 × 180 = ₹2,520 cr. Equity = 2,520 − 300 = ₹2,220 cr. Per share = ₹44.4.</details></p>
+    <p><b>Discussion:</b> the live DCF gives about ₹26.5 per share, versus ₹44.4 from peer multiples. Why might they differ (peer growth and margins, WACC, terminal growth, market sentiment), and which assumption would you challenge first?</p>
+  </div>
+</section>
+
+<section id="m7">
+  <h2>7. Auditing and common errors</h2><p class="sub">15 min</p>
+  <div class="card">
+    <h3 style="margin-top:0">Checklist</h3>
+    <ul>
+      <li>Balance sheet check = 0 in every period; cash on the BS equals cash from the CFS.</li>
+      <li>Formulas consistent across each row (use <code>Ctrl+\</code> or Go To Special → Row differences).</li>
+      <li>No hardcodes in formula cells; no unexplained plugs.</li>
+      <li>Signs and units consistent; mid-year vs end-year discounting applied the same way to TV.</li>
+      <li>WACC &gt; g, always. TV discounted at year n, not n+1.</li>
+      <li>Net debt uses the same date as the valuation date; diluted share count (options, convertibles).</li>
+      <li>Tax on EBIT (not on EBT) for unlevered cash flows.</li>
+    </ul>
+    <h3>Spot the bug (10 min)</h3>
+    <p>Give each pair 3 minutes per case, then reveal.</p>
+    <details><summary>Case 1: Value per share is ₹900 and TV is 95% of EV</summary>Terminal growth set to 9% with WACC 10%, so the Gordon denominator is 1%. Fix: cap g, show TV share, cross-check the implied multiple.</details>
+    <details><summary>Case 2: Balance sheet is off by exactly the D&amp;A</summary>D&amp;A reduced net income but was not added back in CFO (or PP&amp;E was not reduced). Trace D&amp;A through all three statements.</details>
+    <details><summary>Case 3: UFCF grows 40% but revenue grows 8%</summary>ΔNWC sign flipped (an increase in working capital added to cash flow). Check signs on the cash flow statement.</details>
+    <details><summary>Case 4: EV/EBITDA looks cheap but equity value is negative</summary>EV was used where equity value was needed: net debt was not subtracted (or was added).</details>
+    <details><summary>Case 5: WACC drops when debt increases without limit</summary>Cost of debt and beta were held constant. Re-lever beta and raise Kd as leverage rises.</details>
+  </div>
+</section>
+
+<section id="ex">
+  <h2>Exercises and capstone</h2>
+  <div class="card">
+    <h3 style="margin-top:0">Exercise A: Working capital days (10 min)</h3>
+    <p>Revenue ₹1,200 cr, COGS ₹840 cr. Receivables 45 days of revenue, inventory 60 days of COGS, payables 40 days of COGS. Compute net working capital.
+    <details><summary>Solution</summary>Receivables = 1,200 × 45/365 = 147.9. Inventory = 840 × 60/365 = 138.1. Payables = 840 × 40/365 = 92.1. NWC = 147.9 + 138.1 − 92.1 = <b>₹193.9 cr</b> (16.2% of revenue).</details></p>
+
+    <h3>Exercise B: WACC (10 min)</h3>
+    <p>Rf 7%, ERP 6%, β 1.2, pre-tax Kd 9.5%, tax 25%, debt/(debt+equity) 25%.
+    <details><summary>Solution</summary>Ke = 7 + 1.2 × 6 = 14.2%. Kd after tax = 9.5 × 0.75 = 7.125%. WACC = 0.75 × 14.2 + 0.25 × 7.125 = 10.65 + 1.78 = <b>12.43%</b>.</details></p>
+
+    <h3>Exercise C: Terminal value (10 min)</h3>
+    <p>Year-5 UFCF = ₹150 cr, WACC 11%, g 4%. Compute TV and its present value.
+    <details><summary>Solution</summary>TV = 150 × 1.04 / (0.11 − 0.04) = 156 / 0.07 = <b>₹2,228.6 cr</b>. PV = 2,228.6 / 1.11<sup>5</sup> = 2,228.6 / 1.6851 = <b>₹1,322.5 cr</b>.</details></p>
+
+    <h3>Capstone (20 min, individual)</h3>
+    <ol>
+      <li>Rebuild the Kaveri DCF in a spreadsheet from the inputs above, in your own layout (inputs, calcs, outputs).</li>
+      <li>Match the live model's value per share within ₹0.50.</li>
+      <li>Add a scenario selector and a WACC × g data table.</li>
+      <li>Write three sentences: what the value is, what drives it, and what you would want to verify next.</li>
+    </ol>
+    <p><b>Assessment rubric:</b> structure and formatting (25%) · correct linkages and checks (25%) · defensible assumptions (25%) · interpretation of sensitivities (25%).</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2>Knowledge check</h2>
+  <div class="card" id="quizbox"></div>
+  <button id="grade">Check answers</button> <span id="score" style="margin-left:10px;font-weight:600"></span>
+</section>
+
+<section id="cheat">
+  <h2>One-page cheat sheet</h2>
+  <div class="card">
+    <div class="formula">UFCF = EBIT(1−t) + D&amp;A − Capex − ΔNWC<br>Ke = Rf + β·ERP · WACC = wE·Ke + wD·Kd(1−t)<br>TV = UFCF·(1+g)/(WACC−g) · PV = TV/(1+WACC)^n<br>EV → Equity: − net debt − minorities − pensions + non-op assets<br>Per share = Equity / diluted shares</div>
+    <ul>
+      <li>Blue = input, black = formula, green = link, red = check.</li>
+      <li>Forecast drivers, not totals. Fade to steady state.</li>
+      <li>WACC &gt; g. Terminal value is a judgment, show its share of EV.</li>
+      <li>Triangulate: DCF + multiples + sanity ratios (ROIC, margins vs peers).</li>
+      <li>Always report a range, not a point.</li>
+    </ul>
+    <h3>Further reading</h3>
+    <ul>
+      <li>Aswath Damodaran, <i>Investment Valuation</i> and his free datasets and lectures</li>
+      <li>Rosenbaum &amp; Pearl, <i>Investment Banking: Valuation, LBOs, M&amp;A</i></li>
+      <li>Benninga, <i>Financial Modeling</i></li>
+      <li>FAST Standard (modeling structure guidelines)</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Facilitator notes</h2>
+  <div class="card">
+    <ul>
+      <li>Open with the case company and ask "what is it worth?" Revisit the guess at the end.</li>
+      <li>Keep a visible parking lot for tangents (LBO, M&amp;A merger models) for a follow-up session.</li>
+      <li>If time is short, cut section 6 to a demo and drop Exercise C; keep the live model and capstone.</li>
+      <li>Extensions for a second session: debt schedule and cash sweep, LBO, merger model, Monte Carlo on growth and margin.</li>
+      <li>Disclaimer: all companies and numbers here are fictional and for teaching only.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var BASE={rev:1000,g1:12,g5:7,margin:18,da:4,capex:5,nwc:12,tax:25,wacc:11,tg:4,debt:300,shares:50};
+  var LABELS={rev:["Base revenue (₹ cr)",10],g1:["Growth Y1 (%)",0.5],g5:["Growth Y5 (%)",0.5],margin:["EBITDA margin (%)",0.5],da:["D&A (% rev)",0.5],capex:["Capex (% rev)",0.5],nwc:["NWC (% rev)",0.5],tax:["Tax rate (%)",1],wacc:["WACC (%)",0.25],tg:["Terminal growth (%)",0.25],debt:["Net debt (₹ cr)",10],shares:["Shares (cr)",1]};
+  var S=JSON.parse(JSON.stringify(BASE));
+
+  function dcf(p){
+    var rows=[],rev=p.rev,prevNwc=p.rev*p.nwc/100,pv=0,last=null;
+    for(var t=1;t<=5;t++){
+      var g=p.g1+(p.g5-p.g1)*(t-1)/4;
+      rev=rev*(1+g/100);
+      var ebitda=rev*p.margin/100,da=rev*p.da/100,ebit=ebitda-da,nopat=ebit*(1-p.tax/100);
+      var nwc=rev*p.nwc/100,dn=nwc-prevNwc;prevNwc=nwc;
+      var capex=rev*p.capex/100,fcf=nopat+da-capex-dn,df=1/Math.pow(1+p.wacc/100,t);
+      pv+=fcf*df;
+      last={g:g,rev:rev,ebitda:ebitda,ebit:ebit,nopat:nopat,da:da,capex:capex,dn:dn,fcf:fcf,df:df,pvf:fcf*df};
+      rows.push(last);
+    }
+    var w=p.wacc/100,tg=p.tg/100;
+    var tv=w>tg?last.fcf*(1+tg)/(w-tg):NaN;
+    var pvtv=tv/Math.pow(1+w,5);
+    var ev=pv+pvtv,eq=ev-p.debt,ps=eq/p.shares;
+    return {rows:rows,pv:pv,tv:tv,pvtv:pvtv,ev:ev,eq:eq,ps:ps,tvShare:pvtv/ev,impl:tv/last.ebitda};
+  }
+  window.__dcf=dcf;
+
+  var f0=function(x){return isFinite(x)?x.toLocaleString("en-IN",{maximumFractionDigits:0}):"n/a"};
+  var f1=function(x){return isFinite(x)?x.toLocaleString("en-IN",{minimumFractionDigits:1,maximumFractionDigits:1}):"n/a"};
+
+  function build(){
+    var h="";
+    for(var k in LABELS){h+='<div><label for="i_'+k+'">'+LABELS[k][0]+'</label><input type="number" id="i_'+k+'" data-k="'+k+'" step="'+LABELS[k][1]+'" value="'+S[k]+'"></div>';}
+    document.getElementById("inputs").innerHTML=h;
+    Array.prototype.forEach.call(document.querySelectorAll("#inputs input"),function(el){
+      el.addEventListener("input",function(){var v=parseFloat(el.value);if(!isNaN(v)){S[el.dataset.k]=v;render();}});
+    });
+  }
+
+  function render(){
+    var r=dcf(S);
+    var k=document.getElementById("kpis");
+    k.innerHTML=[["Enterprise value (₹ cr)",f0(r.ev)],["Equity value (₹ cr)",f0(r.eq)],["Value per share (₹)",f1(r.ps)],["TV share of EV",isFinite(r.tvShare)?f1(r.tvShare*100)+"%":"n/a"],["Implied exit EV/EBITDA",isFinite(r.impl)?f1(r.impl)+"×":"n/a"]]
+      .map(function(x){return '<div class="kpi"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>'}).join("");
+    var lines=[["Growth (%)","g",f1],["Revenue","rev",f0],["EBITDA","ebitda",f0],["EBIT","ebit",f0],["NOPAT","nopat",f0],["+ D&A","da",f0],["− Capex","capex",f0],["− ΔNWC","dn",f0],["Unlevered FCF","fcf",f0],["Discount factor","df",function(x){return x.toFixed(3)}],["PV of FCF","pvf",f0]];
+    var t="<tr><th>₹ crore</th>"+[1,2,3,4,5].map(function(y){return "<th>Y"+y+"</th>"}).join("")+"</tr>";
+    lines.forEach(function(L){t+="<tr><td>"+L[0]+"</td>"+r.rows.map(function(x){return "<td>"+L[2](x[L[1]])+"</td>"}).join("")+"</tr>"});
+    document.getElementById("proj").innerHTML=t;
+
+    var ws=[-2,-1,0,1,2].map(function(d){return S.wacc+d}),gs=[-1,-0.5,0,0.5,1].map(function(d){return S.tg+d});
+    var s="<tr><th>WACC ↓ / g →</th>"+gs.map(function(g){return "<th>"+g.toFixed(1)+"%</th>"}).join("")+"</tr>";
+    ws.forEach(function(w,i){
+      s+="<tr><td>"+w.toFixed(2)+"%</td>";
+      gs.forEach(function(g,j){
+        var p=Object.assign({},S,{wacc:w,tg:g}),v=dcf(p).ps;
+        s+='<td'+(i===2&&j===2?' class="base"':'')+'>'+f1(v)+'</td>';
+      });
+      s+="</tr>";
+    });
+    document.getElementById("sens").innerHTML=s;
+    document.getElementById("note").textContent=S.wacc<=S.tg?"Warning: WACC must exceed terminal growth, otherwise terminal value is undefined.":"Cells where WACC ≤ g show n/a.";
+  }
+
+  document.getElementById("reset").addEventListener("click",function(){S=JSON.parse(JSON.stringify(BASE));build();render();});
+  build();render();
+
+  var Q=[
+    ["Which statement ties net income to the change in cash?",["Income statement","Cash flow statement","Balance sheet","Statement of equity"],1,"The cash flow statement starts with net income and reconciles to the change in cash."],
+    ["In unlevered FCF, tax is applied to…",["EBT","EBIT","EBITDA","Net income"],1,"Unlevered cash flows tax EBIT (NOPAT), ignoring the interest tax shield, which lives in WACC."],
+    ["An increase in net working capital…",["Increases cash flow","Reduces cash flow","Has no cash effect","Increases D&A"],1,"More cash is tied up in operations, which reduces free cash flow."],
+    ["WACC rises while everything else is constant. Value per share…",["Rises","Falls","Unchanged","Depends only on g"],1,"Higher discount rate lowers the present value of both explicit cash flows and terminal value."],
+    ["The Gordon growth terminal value requires…",["g > WACC","g = WACC","g < WACC","g = 0"],2,"Denominator is WACC − g, which must be positive."],
+    ["Moving from enterprise value to equity value you…",["Add net debt","Subtract net debt","Add D&A","Subtract capex"],1,"Equity = EV − net debt (and other claims) + non-operating assets."],
+    ["Standard model color for hardcoded inputs is…",["Black","Green","Blue","Red"],2,"Blue for inputs, black for formulas, green for cross-sheet links."],
+    ["A balance sheet is out of balance by exactly D&A. Most likely cause?",["Wrong tax rate","D&A not linked through all three statements","Share count wrong","WACC too high"],1,"D&A must reduce PP&E, reduce income, and be added back in CFO."]
+  ];
+  var qb=document.getElementById("quizbox"),qh="";
+  Q.forEach(function(q,i){
+    qh+='<div class="q"><b>'+(i+1)+'. '+q[0]+'</b><br>';
+    q[1].forEach(function(o,j){qh+='<label><input type="radio" name="q'+i+'" value="'+j+'"> '+o+'</label><br>'});
+    qh+='<div class="fb" id="fb'+i+'"></div></div>';
+  });
+  qb.innerHTML=qh;
+  document.getElementById("grade").addEventListener("click",function(){
+    var sc=0;
+    Q.forEach(function(q,i){
+      var sel=document.querySelector('input[name="q'+i+'"]:checked'),fb=document.getElementById("fb"+i);
+      if(!sel){fb.innerHTML='<span class="bad">Unanswered.</span> '+q[3];return;}
+      if(+sel.value===q[2]){sc++;fb.innerHTML='<span class="ok">Correct.</span> '+q[3];}
+      else fb.innerHTML='<span class="bad">Not quite.</span> '+q[3];
+    });
+    document.getElementById("score").textContent="Score: "+sc+" / "+Q.length;
+  });
+})();
+</script>
+</body>
+</html>
